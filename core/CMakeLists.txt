@@ -2,14 +2,14 @@ cmake_minimum_required(VERSION 3.5)
 
 project(core LANGUAGES CXX)
 
+find_package(Python3 REQUIRED)
+find_package(PythonLibs REQUIRED)
+
 if(DEFINED ENV{CONDA_PREFIX})
     set(PYTHON_VERSION "3.8")
     set(Python3_EXECUTABLE "$ENV{CONDA_PREFIX}/bin/python")
     set(PYTHON_INCLUDE_DIRS "$ENV{CONDA_PREFIX}/include/python${PYTHON_VERSION}")
 endif()
-
-find_package(Python3 REQUIRED)
-find_package(PythonLibs REQUIRED)
 
 message(STATUS "python executeable " ${Python3_EXECUTABLE})
 message(STATUS "python include path " ${PYTHON_INCLUDE_DIRS})
@@ -51,13 +51,14 @@ if (USE_MMAP)
 endif()
 
 if (USE_CUDA)
+    set(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
     enable_language(CUDA)
     add_compile_definitions(USE_CUDA)
     include_directories(include/devices/cuda)
     #message(${CMAKE_CUDA_IMPLICIT_LINK_DIRECTORIES})
     set(FASTLLM_CUDA_SOURCES src/devices/cuda/cudadevice.cpp src/devices/cuda/cudadevicebatch.cpp src/devices/cuda/fastllm-cuda.cu)
     set(FASTLLM_LINKED_LIBS ${FASTLLM_LINKED_LIBS} cublas)
-    set(CMAKE_CUDA_ARCHITECTURES "native")
+    set(CMAKE_CUDA_ARCHITECTURES "75")
 endif()
 
 include(FetchContent)

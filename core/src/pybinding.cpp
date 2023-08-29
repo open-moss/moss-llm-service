@@ -17,7 +17,7 @@ using pastKV = std::vector<std::pair<fastllm::Data,fastllm::Data>>;
 // PYBIND11_MAKE_OPAQUE(std::vector<std::pair<fastllm::Data,fastllm::Data>>);
 PYBIND11_MAKE_OPAQUE(fastllm::Data);
 
-PYBIND11_MODULE(pyfastllm, m) {
+PYBIND11_MODULE(core, m) {
   m.doc() = "core python bindings";
   
   py::class_<fastllm::GenerationConfig>(m, "GenerationConfig")
